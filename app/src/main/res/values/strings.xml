@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Pets list</string>
+    <string name="image_view_description">cat\'s image</string>
+</resources>
