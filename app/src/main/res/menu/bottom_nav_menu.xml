@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miAllDogs"
+        android:title="@string/all_dogs_menu_item"
+        android:icon="@drawable/ic_all_dogs_photo"
+        />
+    <item
+        android:id="@+id/miLikedDogs"
+        android:title="@string/liked_dogs_menu_item"
+        android:icon="@drawable/ic_liked_dogs"
+        />
+</menu>

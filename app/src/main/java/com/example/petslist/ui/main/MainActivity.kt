@@ -1,81 +1,52 @@
 package com.example.petslist.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Adapter
-import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.petslist.App
 import com.example.petslist.R
-import com.example.petslist.data.api.ApiHelper
-import com.example.petslist.data.api.RetrofitBuilder
-import com.example.petslist.ui.MainViewModel
-import com.example.petslist.ui.base.ViewModelFactory
-import com.example.petslist.ui.main.adapter.ItemListListeners
-import com.example.petslist.ui.main.adapter.RecyclerViewAdapter
-import com.example.petslist.utils.Status
+import com.example.petslist.ui.main.fragments.AllDogsFragment
+import com.example.petslist.ui.main.fragments.LikedDogsFragment
+import com.example.petslist.ui.viewmodel.DogsViewModel
+import com.example.petslist.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var myAdapter: RecyclerViewAdapter
+    @Inject lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel: DogsViewModel by viewModels{ viewModelFactory}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        App.appComponent.inject(this@MainActivity)
 
-        setupViewModel()
-        setupUI()
-        setupObservers()
-    }
+        var number:Int
+        viewModel.favDogsLiveData.observe(this, Observer { number=it.size })
+        val allDogsFragment = AllDogsFragment.newInstance()
+        val likedDogsFragment = LikedDogsFragment.newInstance()
 
-    private fun setupObservers() {
-        viewModel.getNumberOfRandomDogs(10,null).observe(this, Observer {
-            it.let {resource ->
-                when(resource.status){
-                    Status.SUCCESS -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        resource.data?.let { dogs -> myAdapter.updateRecyclerViewList(dogs) }
-                    }
-                    Status.ERROR -> {
-                        recyclerView.visibility = View.VISIBLE
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                        textView.text = it.message
-                    }
-                    Status.LOADING -> {
-                        progressBar.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                    }
-                }
+        setCurrentFragment(allDogsFragment)
+
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.miAllDogs -> setCurrentFragment(allDogsFragment)
+                R.id.miLikedDogs -> setCurrentFragment(likedDogsFragment)
             }
-        })
-    }
-
-    private fun setupUI() {
-        val rwLayoutManager =LinearLayoutManager(this@MainActivity)
-        myAdapter = RecyclerViewAdapter(object : ItemListListeners{
-            override fun toDoLater() {
-
-            }
-        })
-        recyclerView.apply {
-            layoutManager = rwLayoutManager
-            adapter = myAdapter
+            true
         }
-
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProviders.of(this, ViewModelFactory(ApiHelper(RetrofitBuilder.theDogApi)))
-            .get(MainViewModel::class.java)
+    private fun setCurrentFragment(fragment :Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, fragment)
+            commit()
+        }
     }
+
 }

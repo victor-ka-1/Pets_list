@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Pets list</string>
-    <string name="image_view_description">cat\'s image</string>
+    <string name="image_view_description">dog\'s image</string>
+    <string name="tv_like">Like</string>
+    <string name="like_button">like button</string>
+    <string name="iv_like">iv_like</string>
+    <string name="download">download</string>
+  
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_fragment">empty_fragment</string>
+    <string name="show_liked_btn">Show Liked</string>
+    <string name="all_dogs_menu_item">All Dogs</string>
+    <string name="liked_dogs_menu_item">Liked Dogs</string>
+    <string name="tv_not_liked_dogs">You didn\'t like any pretty dog or puppy. \n How dare you!?</string>
+    <string name="load_more_dogs">load more dogs</string>
 </resources>

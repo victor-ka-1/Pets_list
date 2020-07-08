@@ -4,11 +4,81 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
-        android:id="@+id/imageView_cat"
+        android:id="@+id/imageView_dog"
         android:layout_width="match_parent"
         android:layout_height="320dp"
-        android:padding="4dp"
         android:contentDescription="@string/image_view_description" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <LinearLayout
+            android:id="@+id/like_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+
+            >
+            <ImageView
+                android:id="@+id/iv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_heart_empty"
+                android:background="@color/design_default_color_background"
+                android:scaleType="center"
+                android:layout_gravity="center"
+                android:tag="don't liked"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:contentDescription="@string/iv_like"/>
+        <TextView
+            android:id="@+id/tv_likeButtonDesriptior"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MaterialComponents.Overline"
+            android:text="@string/tv_like"
+            android:textSize="16sp"
+            android:layout_gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center|end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/download_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:padding="2dp">
+            <ImageView
+                android:id="@+id/iv_download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_download"
+                android:background="@color/design_default_color_background"
+                android:scaleType="center"
+                android:layout_gravity="center"
+                android:tag="don't liked"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:contentDescription="@string/iv_like"/>
+            <TextView
+                android:id="@+id/tv_downloadButtonDesriptior"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MaterialComponents.Overline"
+                android:text="@string/download"
+                android:textSize="16sp"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +87,7 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/holo_orange_dark"/>
+            android:background="@color/colorPrimaryDark"/>
     </RelativeLayout>
 
 </LinearLayout>
