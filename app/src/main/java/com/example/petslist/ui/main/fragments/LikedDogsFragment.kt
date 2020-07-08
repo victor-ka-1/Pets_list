@@ -11,10 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petslist.R
 import com.example.petslist.data.model.Dog
+import com.example.petslist.ui.main.MainActivity
 import com.example.petslist.ui.main.adapters.FavDogsRecyclerViewAdapter
 import com.example.petslist.ui.main.adapters.FavItemListListeners
 import com.example.petslist.ui.viewmodel.DogsViewModel
 import kotlinx.android.synthetic.main.fragment_liked_dogs.*
+
 
 class LikedDogsFragment : Fragment() {
 
@@ -46,7 +48,12 @@ class LikedDogsFragment : Fragment() {
             }
 
             override fun downloadClicked(dog: Dog) {
-                Toast.makeText(activity,"Загрузка", Toast.LENGTH_SHORT).show()
+                if (!(activity as MainActivity).verifyPermissions()) {
+                    return
+                }else {
+                    viewModel.downloadImage(dog.url)
+                }
+               // Toast.makeText(activity,"Загрузка", Toast.LENGTH_SHORT).show()
             }
         })
         recyclerView2.apply {

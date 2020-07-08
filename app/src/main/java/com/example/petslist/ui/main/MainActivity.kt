@@ -1,8 +1,11 @@
 package com.example.petslist.ui.main
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.petslist.App
@@ -13,6 +16,7 @@ import com.example.petslist.ui.viewmodel.DogsViewModel
 import com.example.petslist.ui.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +51,17 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.flFragment, fragment)
             commit()
         }
+    }
+
+    fun verifyPermissions(): Boolean {
+        val permissionExternalMemory =
+            ActivityCompat.checkSelfPermission( this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (permissionExternalMemory != PackageManager.PERMISSION_GRANTED) {
+            val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, permissions, 1)
+            return false
+        }
+        return true
     }
 
 }

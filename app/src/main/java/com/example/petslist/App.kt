@@ -1,6 +1,8 @@
 package com.example.petslist
 
 import android.app.Application
+import android.content.Context
+import androidx.lifecycle.ViewModel
 import com.example.petslist.di.ApiModule
 import com.example.petslist.di.AppModule
 import com.example.petslist.di.RoomModule
@@ -21,6 +23,8 @@ interface ApplicationComponent {
 
     //ViewModelFactory
     fun inject( vmFactory: ViewModelFactory)
+
+    fun getAppContext():Context
 }
 
 // appComponent lives in the Application class to share its lifecycle
