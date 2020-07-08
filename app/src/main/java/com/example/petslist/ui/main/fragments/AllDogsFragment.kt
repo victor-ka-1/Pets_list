@@ -14,6 +14,7 @@ import com.example.petslist.ui.main.MainActivity
 import com.example.petslist.ui.main.adapters.ItemListListeners
 import com.example.petslist.ui.main.adapters.RecyclerViewAdapter
 import com.example.petslist.ui.viewmodel.DogsViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_all_dogs.*
 
 
@@ -34,32 +35,36 @@ class AllDogsFragment : Fragment() {
     }
     companion object {
         @JvmStatic
-        fun newInstance() =
-            AllDogsFragment()
+        fun newInstance() = AllDogsFragment()
     }
 
     private fun setupUI(){
         val rwLayoutManager = LinearLayoutManager(activity)
         myAdapter = RecyclerViewAdapter(object : ItemListListeners {
             override fun likeClicked(dog: Dog) {
-                viewModel.addDogToFav(dog)
+                viewModel.addDogToLiked(dog)
                 dog.liked = true
+                (activity as MainActivity).bottomNavigationView.getOrCreateBadge(R.id.miLikedDogs).apply {
+                    number += 1
+                    isVisible = number > 0
+                }
             }
-
             override fun unlikeClicked(dog: Dog) {
-                viewModel.removeDogFromFav(dog)
+                viewModel.removeDogFromLiked(dog)
                 dog.liked= false
-            }
 
+                (activity as MainActivity).bottomNavigationView.getOrCreateBadge(R.id.miLikedDogs).apply {
+                    if(number > 0) number -= 1
+                    isVisible = number > 0
+                }
+            }
             override fun downloadClicked(dog: Dog) {
                 if (!(activity as MainActivity).verifyPermissions()) {
                     return
                 }else {
                     viewModel.downloadImage(dog.url)
                 }
-              //  Toast.makeText(activity,"Загрузка",Toast.LENGTH_SHORT).show()
             }
-
             override fun footerBtnClicked() {
                 viewModel.getNumberOfRandomDogs(10)
             }
@@ -70,13 +75,11 @@ class AllDogsFragment : Fragment() {
         }
     }
 
-
     private fun setupObservers() {
-        viewModel.getNumberOfRandomDogs(10)
         viewModel.getAllDogsLiveData().observe(viewLifecycleOwner, Observer {list ->
             myAdapter.updateRecyclerViewList(list)
         })
+        progressBar1.visibility = View.GONE
+        recyclerView1.visibility = View.VISIBLE
     }
-
-
 }

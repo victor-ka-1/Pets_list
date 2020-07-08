@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.petslist.R
 import com.example.petslist.data.model.Dog
 import com.example.petslist.ui.main.MainActivity
-import com.example.petslist.ui.main.adapters.FavDogsRecyclerViewAdapter
+import com.example.petslist.ui.main.adapters.LikedDogsRecyclerViewAdapter
 import com.example.petslist.ui.main.adapters.FavItemListListeners
 import com.example.petslist.ui.viewmodel.DogsViewModel
 import kotlinx.android.synthetic.main.fragment_liked_dogs.*
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_liked_dogs.*
 class LikedDogsFragment : Fragment() {
 
     private val viewModel : DogsViewModel by activityViewModels()
-    private lateinit var myAdapter: FavDogsRecyclerViewAdapter
+    private lateinit var myAdapter: LikedDogsRecyclerViewAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_liked_dogs, container, false)
@@ -41,10 +40,9 @@ class LikedDogsFragment : Fragment() {
 
     private fun setupUI(){
         val rwLayoutManager = LinearLayoutManager(activity)
-        myAdapter = FavDogsRecyclerViewAdapter(object : FavItemListListeners {
-
+        myAdapter = LikedDogsRecyclerViewAdapter(object : FavItemListListeners {
             override fun unlikeClicked(dog: Dog) {
-                viewModel.removeDogFromFav(dog)
+                viewModel.removeDogFromLiked(dog)
             }
 
             override fun downloadClicked(dog: Dog) {
@@ -64,7 +62,7 @@ class LikedDogsFragment : Fragment() {
 
 
     private fun setupObservers() {
-        viewModel.favDogsLiveData.observe(viewLifecycleOwner, Observer { updatedList ->
+        viewModel.likedDogsLiveData.observe(viewLifecycleOwner, Observer { updatedList ->
             if(updatedList != null) {
                 if (updatedList.isNotEmpty()) tv_shame.visibility = View.GONE
                 else tv_shame.visibility = View.VISIBLE

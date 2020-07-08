@@ -1,6 +1,5 @@
 package com.example.petslist.ui.main.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -74,14 +73,14 @@ class DogViewHolder(private val view1:View, private val listeners:ItemListListen
         else view1.iv_like.setImageResource(R.drawable.icon_heart_empty)
 
         view1.like_layout.setOnClickListener {
-            if(it.iv_like.tag == "don't liked") {
+            if(!dog.liked) {
                 view1.iv_like.setImageResource(R.drawable.icon_heart_clicked)
-                it.iv_like.tag = "liked"
+                dog.liked = true
                 listeners.likeClicked(dog = dog)
             }
             else{
                 view1.iv_like.setImageResource(R.drawable.icon_heart_empty)
-                it.iv_like.tag = "don't liked"
+                dog.liked = false
                 listeners.unlikeClicked(dog = dog)
             }
         }
@@ -96,8 +95,6 @@ class DogViewHolder(private val view1:View, private val listeners:ItemListListen
    }
 
 }
-
-
 class DogDiffUtil(private val oldList: List<Dog>, private val newList: List<Dog> ) :DiffUtil.Callback(){
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
 

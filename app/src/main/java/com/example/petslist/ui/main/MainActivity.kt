@@ -30,19 +30,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         App.appComponent.inject(this@MainActivity)
 
-        var number:Int
-        viewModel.favDogsLiveData.observe(this, Observer { number=it.size })
+        //initial portion of dogs
+        viewModel.getNumberOfRandomDogs(10)
+
         val allDogsFragment = AllDogsFragment.newInstance()
         val likedDogsFragment = LikedDogsFragment.newInstance()
 
         setCurrentFragment(allDogsFragment)
-
+        likedDogsBadgeReset()
         bottomNavigationView.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.miAllDogs -> setCurrentFragment(allDogsFragment)
-                R.id.miLikedDogs -> setCurrentFragment(likedDogsFragment)
-            }
-            true
+                when (it.itemId) {
+                    R.id.miAllDogs -> setCurrentFragment(allDogsFragment)
+                    R.id.miLikedDogs -> {
+                        setCurrentFragment(likedDogsFragment)
+                        likedDogsBadgeReset()
+                    }
+                }
+                true
+        }
+    }
+    private fun likedDogsBadgeReset(){
+        bottomNavigationView.getOrCreateBadge(R.id.miLikedDogs).apply {
+            number =0
+            isVisible = false
         }
     }
 

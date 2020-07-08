@@ -11,7 +11,7 @@ import com.example.petslist.R
 import com.example.petslist.data.model.Dog
 import kotlinx.android.synthetic.main.recyclerview_item.view.*
 
-class FavDogsRecyclerViewAdapter(private val listeners: FavItemListListeners) :RecyclerView.Adapter<FavDogViewHolder>(){
+class LikedDogsRecyclerViewAdapter(private val listeners: FavItemListListeners) :RecyclerView.Adapter<LikedDogViewHolder>(){
     private val dogsList:ArrayList<Dog> =ArrayList()
 
     private fun setData(newList : List<Dog>){
@@ -19,30 +19,30 @@ class FavDogsRecyclerViewAdapter(private val listeners: FavItemListListeners) :R
         dogsList.addAll(newList)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavDogViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikedDogViewHolder {
         val itemView =LayoutInflater.from(parent.context)
             .inflate(R.layout.recyclerview_item,parent,false)
         itemView.iv_like.setImageResource(R.drawable.icon_heart_clicked)
-        return FavDogViewHolder(itemView,listeners)
+        return LikedDogViewHolder(itemView,listeners)
     }
 
     override fun getItemCount(): Int {
         return dogsList.size
     }
 
-    override fun onBindViewHolder(holder: FavDogViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: LikedDogViewHolder, position: Int) {
         holder.bind(dogsList[position])
     }
 
     fun updateRecyclerViewList( newList: List<Dog>){
-        val dogDiffUtilCallback = FavDogDiffUtil(dogsList, newList)
+        val dogDiffUtilCallback = LikedDogDiffUtil(dogsList, newList)
         val dogDiffResult = DiffUtil.calculateDiff(dogDiffUtilCallback)
         setData(newList)
         dogDiffResult.dispatchUpdatesTo(this)
     }
 }
 
-class FavDogViewHolder(private val view1:View, private val listeners:FavItemListListeners) : RecyclerView.ViewHolder(view1){
+class LikedDogViewHolder(private val view1:View, private val listeners:FavItemListListeners) : RecyclerView.ViewHolder(view1){
     fun bind(dog: Dog){
         Glide.with(view1.context)
             .load(dog.url)
@@ -51,7 +51,7 @@ class FavDogViewHolder(private val view1:View, private val listeners:FavItemList
             .into(view1.imageView_dog)
 
         view1.like_layout.setOnClickListener {
-                listeners.unlikeClicked(dog = dog)
+            listeners.unlikeClicked(dog = dog)
 
         }
         view1.download_layout.setOnClickListener {
@@ -61,7 +61,7 @@ class FavDogViewHolder(private val view1:View, private val listeners:FavItemList
 
 }
 
-class FavDogDiffUtil(private val oldList: List<Dog>, private val newList: List<Dog> ) :DiffUtil.Callback(){
+class LikedDogDiffUtil(private val oldList: List<Dog>, private val newList: List<Dog> ) :DiffUtil.Callback(){
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition].url == newList[newItemPosition].url
     }
