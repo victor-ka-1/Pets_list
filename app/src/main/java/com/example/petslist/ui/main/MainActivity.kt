@@ -32,12 +32,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         App.appComponent.inject(this@MainActivity)
 
-        viewModel.allDogsLiveData.observe(this, Observer {  })
-        viewModel.likedDogsLiveData.observe(this, Observer {  })
-
         val allDogsFragment = AllDogsFragment.newInstance()
         val likedDogsFragment = LikedDogsFragment.newInstance()
-
         setCurrentFragment(allDogsFragment)
         likedDogsBadgeReset()
         bottomNavigationView.setOnNavigationItemSelectedListener {
@@ -53,6 +49,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
         }
+        var allDogs:Int
+        var likedDogs:Int
+        viewModel.allDogsLiveData.observe(this, Observer { allDogs=it.size })
+        viewModel.likedDogsLiveData.observe(this, Observer { likedDogs=it.size })
     }
     private fun likedDogsBadgeReset(){
         bottomNavigationView.getOrCreateBadge(R.id.miLikedDogs).apply {

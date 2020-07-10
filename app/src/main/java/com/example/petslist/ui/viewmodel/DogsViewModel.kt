@@ -32,10 +32,6 @@ class DogsViewModel  ( private val dogRepository: DogRepository) : ViewModel(){
     val apiService = App.appComponent.getApiService()
 
     private var order: Order? = null
-    fun setOrder(ord: Order){
-        order= ord
-        invalidatePagedList()
-    }
 
     fun invalidatePagedList(){
         allDogsLiveData.value?.dataSource?.invalidate()
@@ -62,6 +58,10 @@ class DogsViewModel  ( private val dogRepository: DogRepository) : ViewModel(){
             }
         }
         return LivePagedListBuilder<Int, Dog>(dataSourceFactory, config)
+    }
+    fun setOrder(ord: Order){
+        order= ord
+        invalidatePagedList()
     }
 
     val likedDogsLiveData: LiveData<List<Dog>> = dogRepository.getAllDogs()
