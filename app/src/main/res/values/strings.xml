@@ -13,4 +13,10 @@
     <string name="liked_dogs_menu_item">Liked Dogs</string>
     <string name="tv_not_liked_dogs">You didn\'t like any pretty dog or puppy. \n How dare you!?</string>
     <string name="load_more_dogs">load pretty dogs</string>
+    <string name="refresh">refresh</string>
+    <string name="clear_liked">Clear liked list</string>
+    <string name="asc">ASC</string>
+    <string name="desc">DESC</string>
+    <string name="random">RANDOM</string>
+    <string name="order">order</string>
 </resources>

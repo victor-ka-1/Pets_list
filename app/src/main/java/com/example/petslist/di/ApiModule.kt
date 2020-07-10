@@ -12,6 +12,8 @@ import javax.inject.Singleton
 
 @Module
 class ApiModule{
+    private val apiKeyHeader = "x-api-key"
+    private val apiKey = "3753dafa-efbb-4423-8e54-b9ddcd320bf0"
 
     @Singleton
     @Provides
@@ -25,6 +27,12 @@ class ApiModule{
         return OkHttpClient.Builder()
             .readTimeout(1200,TimeUnit.SECONDS)
             .connectTimeout(1200,TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader(apiKeyHeader, apiKey)
+                    .build()
+                chain.proceed(request)
+            }
             .addInterceptor(loggingInterceptor)
             .build()
     }

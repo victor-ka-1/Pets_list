@@ -1,8 +1,6 @@
 package com.example.petslist.di
 
 import com.example.petslist.data.DogRepository
-import com.example.petslist.data.api.DogDataSource
-import com.example.petslist.data.api.TheDogApiService
 import com.example.petslist.data.room_database.DogDao
 import com.example.petslist.ui.viewmodel.ViewModelFactory
 import dagger.Module
@@ -14,14 +12,8 @@ import javax.inject.Singleton
  class AppModule {
     @Singleton
     @Provides
-    fun provideDogRepository(dogDataSource: DogDataSource , dogDao: DogDao):DogRepository{
-        return DogRepository(dogDataSource = dogDataSource , dogDao = dogDao )
-    }
-
-    @Singleton
-    @Provides
-    fun provideDogDataSource(apiService: TheDogApiService):DogDataSource{
-        return DogDataSource(api = apiService)
+    fun provideDogRepository( dogDao: DogDao):DogRepository{
+        return DogRepository(dogDao = dogDao )
     }
 
     @Singleton
@@ -29,5 +21,4 @@ import javax.inject.Singleton
     fun provideViewModelFactory(repository: DogRepository) :ViewModelFactory{
         return ViewModelFactory(repository)
     }
-
 }

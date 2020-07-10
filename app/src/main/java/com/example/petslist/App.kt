@@ -2,6 +2,7 @@ package com.example.petslist
 
 import android.app.Application
 import android.content.Context
+import com.example.petslist.data.api.TheDogApiService
 import com.example.petslist.di.ApiModule
 import com.example.petslist.di.AppModule
 import com.example.petslist.di.RoomModule
@@ -18,6 +19,7 @@ interface ApplicationComponent {
     fun inject( vmFactory: ViewModelFactory)
 
     fun getAppContext():Context
+    fun getApiService():TheDogApiService
 }
 
 class App : Application(){

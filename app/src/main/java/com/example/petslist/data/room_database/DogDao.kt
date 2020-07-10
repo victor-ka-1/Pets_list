@@ -6,7 +6,7 @@ import com.example.petslist.data.model.Dog
 
 @Dao
 interface DogDao {
-    @Insert
+    @Insert( onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(dog: Dog)
 
     @Delete
@@ -17,4 +17,7 @@ interface DogDao {
 
     @Query("SELECT * FROM fav_dogs_table")
     fun getAllDogs() : LiveData<List<Dog>>
+
+//    @Query("SELECT * FROM fav_dogs_table WHERE id=:id")
+//    fun getDogById(id:String): LiveData<Dog>
 }

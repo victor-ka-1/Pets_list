@@ -34,8 +34,7 @@ class LikedDogsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            LikedDogsFragment()
+        fun newInstance() = LikedDogsFragment()
     }
 
     private fun setupUI(){
@@ -51,7 +50,6 @@ class LikedDogsFragment : Fragment() {
                 }else {
                     viewModel.downloadImage(dog.url)
                 }
-               // Toast.makeText(activity,"Загрузка", Toast.LENGTH_SHORT).show()
             }
         })
         recyclerView2.apply {

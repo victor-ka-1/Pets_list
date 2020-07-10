@@ -3,6 +3,8 @@ package com.example.petslist.ui.main
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.petslist.App
 import com.example.petslist.R
+import com.example.petslist.data.api.Order
 import com.example.petslist.ui.main.fragments.AllDogsFragment
 import com.example.petslist.ui.main.fragments.LikedDogsFragment
 import com.example.petslist.ui.viewmodel.DogsViewModel
@@ -24,14 +27,13 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: DogsViewModel by viewModels{ viewModelFactory}
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         App.appComponent.inject(this@MainActivity)
 
-        //initial portion of dogs
-        viewModel.getNumberOfRandomDogs(10)
+        viewModel.allDogsLiveData.observe(this, Observer {  })
+        viewModel.likedDogsLiveData.observe(this, Observer {  })
 
         val allDogsFragment = AllDogsFragment.newInstance()
         val likedDogsFragment = LikedDogsFragment.newInstance()
@@ -40,7 +42,10 @@ class MainActivity : AppCompatActivity() {
         likedDogsBadgeReset()
         bottomNavigationView.setOnNavigationItemSelectedListener {
                 when (it.itemId) {
-                    R.id.miAllDogs -> setCurrentFragment(allDogsFragment)
+                    R.id.miAllDogs -> {
+                        setCurrentFragment(allDogsFragment)
+
+                    }
                     R.id.miLikedDogs -> {
                         setCurrentFragment(likedDogsFragment)
                         likedDogsBadgeReset()
@@ -72,6 +77,35 @@ class MainActivity : AppCompatActivity() {
             return false
         }
         return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.options_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.mi_refreshList ->{
+                viewModel.invalidatePagedList()
+            }
+            R.id.mi_deleteAllLiked ->{
+                viewModel.clearLikedDogsList()
+            }
+            R.id.mi_ASCorder ->{
+                viewModel.setOrder(Order.ASC)
+                item.isChecked = true
+            }
+            R.id.mi_DESCorder ->{
+                viewModel.setOrder(Order.DESC)
+                item.isChecked = true
+            }
+            R.id.mi_RANDorder ->{
+                viewModel.setOrder(Order.RAND)
+                item.isChecked = true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
